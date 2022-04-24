@@ -1,24 +1,27 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, {useState} from "react";
+import { ColorForm } from "./components/ColorForm";
+import { ColorList } from "./components/ColorList";
+import { IColor } from "./interfaces";
+import {Header} from "./components/Header";
 
-function App() {
+const App: React.FC = () => {
+  const [color, setColor] = useState<IColor[]>([])
+
+  const addHandler = (color:string) => {
+    const newColor: IColor = {
+      color: color,
+      id: Date.now()
+    }
+    setColor(prev => [newColor, ...prev])
+  }
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Header/>
+      <div className="app-wrapper">
+        <ColorForm onAdd={addHandler}/>
+        <ColorList colors={color}/>
+      </div>
     </div>
   );
 }
